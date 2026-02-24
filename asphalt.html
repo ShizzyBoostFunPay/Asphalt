@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asphalt 9: Советы и хитрости by ShizzyBoost</title>
+    <!-- Favicon (машинка) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23f5b31c'/%3E%3Ctext x='18' y='75' font-size='70' fill='%23000' font-family='Arial'%3E9%3C/text%3E%3C/svg%3E">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #eef2f7;  /* fallback */
+            min-height: 100vh;
+            position: relative;
+            color: #1e263a;
+            line-height: 1.6;
+        }
+
+        /* ===== АНИМИРОВАННЫЙ ФОН ИЗ ЧАСТИЦ ===== */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
+            background: linear-gradient(145deg, #f0f4fa 0%, #d9e2ef 100%);
+        }
+
+        /* ===== ОСНОВНОЙ КОНТЕЙНЕР ===== */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(245, 179, 28, 0.3);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: background 0.3s;
+        }
+
+        /* Шапка */
+        header {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            padding: 30px 35px 25px;
+            border-bottom: 3px solid #f5b31c;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            line-height: 1.2;
+            color: #1e293b;
+            text-shadow: 2px 2px 0 rgba(245, 179, 28, 0.2);
+        }
+
+        .byline {
+            font-size: 1.3rem;
+            margin-top: 10px;
+            color: #334155;
+            border-left: 4px solid #f5b31c;
+            padding-left: 20px;
+            font-weight: 500;
+        }
+
+        .update-badge {
+            background: #f5b31c;
+            color: #0f172a;
+            display: inline-block;
+            padding: 6px 20px;
+            border-radius: 60px;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 15px;
+            border: 1px solid #ffffffaa;
+            box-shadow: 0 4px 6px #00000010;
+        }
+
+        /* Контент */
+        .content {
+            padding: 35px;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 50px 0 20px;
+            color: #f5b31c;
+            border-bottom: 3px solid #f5b31c40;
+            padding-bottom: 8px;
+            position: relative;
+            display: inline-block;
+        }
+
+        h2:before {
+            content: '⚡';
+            color: #f5b31c;
+            font-size: 2rem;
+            margin-right: 10px;
+            opacity: 0.9;
+        }
+
+        h3 {
+            font-size: 1.7rem;
+            margin: 35px 0 15px;
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1.2rem;
+            font-size: 1.1rem;
+            color: #1e293b;
+        }
+
+        /* Выделенные блоки (советы) */
+        .highlight-box {
+            background: #ffffffdd;
+            border-left: 8px solid #f5b31c;
+            padding: 22px 28px;
+            border-radius: 28px;
+            margin: 30px 0;
+            box-shadow: 0 10px 25px -8px #b0c4de;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+            border: 1px solid #ffffff;
+        }
+
+        .highlight-box strong {
+            color: #f5b31c;
+            font-size: 1.3rem;
+            display: block;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .code-block {
+            background: #f1f5f9;
+            border-radius: 24px;
+            padding: 22px;
+            font-family: 'Courier New', monospace;
+            border: 1px solid #cbd5e1;
+            color: #0f172a;
+            margin: 20px 0;
+            box-shadow: inset 0 2px 6px #00000008;
+        }
+
+        ul, ol {
+            margin: 15px 0 20px 30px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: #1e293b;
+        }
+
+        li strong {
+            color: #f5b31c;
+            font-weight: 600;
+        }
+
+        .note {
+            background: #e9f0f9;
+            border-radius: 20px;
+            padding: 20px 25px;
+            margin: 30px 0;
+            border: 1px solid #bdd3eb;
+            font-style: italic;
+            color: #1e2b3c;
+        }
+
+        /* Карточки (сетка) */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 24px;
+            border: 1px solid #e9eef3;
+            transition: 0.2s;
+            box-shadow: 0 8px 16px -8px #94a3b8;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: #f5b31c;
+            box-shadow: 0 18px 30px -12px #f5b31c80;
+        }
+
+        .card h4 {
+            color: #f5b31c;
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+        }
+
+        hr {
+            border: none;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #f5b31c, transparent);
+            margin: 50px 0;
+        }
+
+        /* Подвал */
+        footer {
+            background: #ffffffcc;
+            backdrop-filter: blur(8px);
+            padding: 20px 35px;
+            text-align: center;
+            color: #475569;
+            border-top: 1px solid #d1dbe8;
+            font-size: 1rem;
+        }
+
+        .copyright {
+            color: #1e293b;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        /* Псевдо-кнопка */
+        .button-sim {
+            display: inline-block;
+            background: #f5b31c;
+            color: #0f172a;
+            padding: 12px 30px;
+            border-radius: 60px;
+            border: none;
+            font-weight: 600;
+            box-shadow: 0 6px 0 #b47d10;
+            transition: 0.1s;
+            margin: 10px 0;
+            border: 1px solid #ffeac2;
+            cursor: default;
+        }
+
+        .button-sim:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #b47d10;
+        }
+
+        /* Адаптив */
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 2.3rem;
+            }
+            .content {
+                padding: 20px;
+            }
+            h2 {
+                font-size: 1.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Canvas для частиц -->
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="container">
+        <header>
+            <h1>ASPHALT 9<br>СОВЕТЫ И ХИТРОСТИ</h1>
+            <div class="byline">by ShizzyBoost • ТОП ГАЙД </div>
+            <div class="update-badge">⚡ Обновляется каждый месяц — сохрани ссылку!</div>
+        </header>
+
+        <div class="content">
+            <!-- Вступление -->
+            <section>
+                <p style="font-size: 1.25rem; background: #f8fafc; padding: 25px; border-radius: 30px; border: 1px solid #f5b31c60;">
+                    <strong>ASPHALT 9 LEGENDS</strong> — Android / iOS, релиз 25.07.2018, Gameloft. Здесь собраны советы топ-игроков, ответы разработчиков и секреты прохождения. 
+                    <span style="color: #f5b31c; font-weight: 600;">ShizzyBoost</span> приветствует тебя!
+                </p>
+            </section>
+
+            <!-- Код получения -->
+            <h2>Код получения</h2>
+            <p><strong>Код получения</strong> — специальный код от разработчика за подписки и акции. Приходит на e-mail.</p>
+            <div class="code-block">
+                🔑 Активация: Настройки → «Код получения» → введи код → «Получить».<br>
+                🎁 Бонусы: жетоны, редкие авто.
+            </div>
+            <div class="note">
+                ⚠️ Следи за официальными соцсетями — там анонсы раздач.
+            </div>
+
+            <!-- Как скачать на ПК -->
+            <h2>Asphalt 9: как скачать на ПК?</h2>
+            <p>С официального сайта Gameloft или Microsoft Store (Windows 10).</p>
+            <div class="grid-cards">
+                <div class="card">
+                    <h4>🖥️ Минималки</h4>
+                    <ul>
+                        <li>ОЗУ: от 2 ГБ</li>
+                        <li>Место: от 2 ГБ</li>
+                        <li>CPU: Pentium III (до 10 лет)</li>
+                        <li>ОС: Windows 7–10 (32/64)</li>
+                        <li>+ эмулятор (BlueStacks)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>📥 BlueStacks</h4>
+                    <ol>
+                        <li>Скачай с офиц. сайта</li>
+                        <li>Установи, войди в Google</li>
+                        <li>Скачай Asphalt 9</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Нитро гайд -->
+            <h2>Общий гайд по нитро</h2>
+            <p>Собирай баллоны, делай трюки, тарань — и шкала нитро полна.</p>
+            <h3>Как копить нитро</h3>
+            <ul>
+                <li><strong>Баллоны</strong> на трассе</li>
+                <li><strong>Трюки</strong> (дрифт, бочка, разворот)</li>
+                <li><strong>Таран</strong> соперников</li>
+                <li><strong>Разрушение</strong> мусора</li>
+            </ul>
+            <h3>Уровни нитро</h3>
+            <div class="grid-cards" style="grid-template-columns: repeat(2,1fr);">
+                <div class="card"><strong>🟡 Простое:</strong> 1 нажатие, жёлтое, экономно</div>
+                <div class="card"><strong>🟠 Двойное:</strong> оранжевое, быстрее</div>
+                <div class="card"><strong>🔵 Идеальное:</strong> синее, для сложных участков</div>
+                <div class="card"><strong>🟣 Волна:</strong> фиолетовое, макс. скорость</div>
+            </div>
+            <div class="highlight-box">
+                <strong>🔥 СОВЕТ</strong> Чем выше уровень, тем сложнее управление. Нитро-волну — только на прямых.
+            </div>
+
+            <!-- Идеальное нитро -->
+            <h2>Как сделать идеальное нитро?</h2>
+            <ol>
+                <li>Нажми нитро 1 раз (жёлтое).</li>
+                <li>Когда правый край шкалы окажется в синем секторе — нажми снова.</li>
+                <li>Шкала станет синей — идеальное нитро.</li>
+            </ol>
+
+            <!-- Нитро волна -->
+            <h2>Как сделать нитро-волну?</h2>
+            <p>При полной шкале быстро дважды нажми нитро — цвет станет фиолетовым.</p>
+            <div class="highlight-box">
+                <strong>⚠️ ВАЖНО</strong> Только на прямой! Иначе вылет.
+            </div>
+
+            <!-- Трюки -->
+            <h2>Гайд по трюкам</h2>
+            <ul>
+                <li><strong>Разворот на земле:</strong> дважды тормоз.</li>
+                <li><strong>Разворот в воздухе:</strong> трамплин + двойной тормоз.</li>
+                <li><strong>Бочка:</strong> закрученный трамплин.</li>
+                <li><strong>Дрифт:</strong> нажать тормоз в повороте.</li>
+            </ul>
+            <div class="highlight-box">
+                <strong>🛸 ЛАЙФХАК</strong> Включай нитро в полёте — догонишь соперников быстрее.
+            </div>
+
+            <!-- Разворот, бочка, нокдаун -->
+            <h2>Разворот 360° и нокдаун</h2>
+            <p><strong>Разворот 360°:</strong> дважды тормоз перед прыжком.</p>
+            <p><strong>Бочка:</strong> заезжай на изогнутый трамплин с краю.</p>
+            <p><strong>Нокдаун:</strong> таран с нитро или разворот 360° рядом.</p>
+
+            <!-- Рейтинг и прокачка -->
+            <h2>Рейтинг и прокачка</h2>
+            <p>Классы: D → C → B → A → S (S — редкие).</p>
+            <h3>Чертежи и карты</h3>
+            <ul>
+                <li><strong>Необычные:</strong> синие чертежи.</li>
+                <li><strong>Редкие:</strong> фиолетовые.</li>
+                <li><strong>Эпические:</strong> за спецмонеты/ивенты.</li>
+            </ul>
+            <h3>Где брать чертежи</h3>
+            <ol>
+                <li>Карьера</li>
+                <li>Ежедневные задания</li>
+                <li>Клуб</li>
+                <li>Сетевая (до 3 чертежей)</li>
+                <li>Паки в магазине (каждые 4 часа)</li>
+            </ol>
+
+            <!-- Заправка -->
+            <h2>Заправка авто</h2>
+            <p>У каждой машины лимит бензина. Уходя — ставь на заправку.</p>
+            <div class="highlight-box">
+                <strong>⛽ СОВЕТ</strong> Высший класс — дольше заправка. Ускоряй рекламой (-50% остатка) или жетонами.
+            </div>
+
+            <!-- Внешний вид -->
+            <h2>Кастомизация</h2>
+            <p>В гараже иконка капли — меняй цвет корпуса, дисков, суппортов. С 3★ открываются карбоновые детали.</p>
+
+            <!-- Управление -->
+            <h2>Управление</h2>
+            <ul>
+                <li><strong>Ручное:</strong> гироскоп.</li>
+                <li><strong>Touchdrive:</strong> автоматическое, одно касание. Удобно для новичков.</li>
+            </ul>
+
+            <!-- Уровень гаража и репутации -->
+            <h2>Гараж и репутация</h2>
+            <p><strong>Уровень гаража</strong> = стоимость твоего автопарка. Растёт с новыми авто и прокачкой. Влияет на Черный рынок.</p>
+            <p><strong>Репутация</strong> — за мультиплеер, события, карьеру. Новый уровень = полный бак всем.</p>
+
+            <!-- Режимы -->
+            <h2>Режимы игры</h2>
+            <ul>
+                <li>Карьера (главы, флаги, задачи)</li>
+                <li>Сетевая (мультиплеер)</li>
+                <li>Ежедневные акции (события)</li>
+            </ul>
+            <p>Типы заездов: классика, атака времени, погоня.</p>
+
+            <!-- Советы по гонкам -->
+            <h2>Советы по прохождению</h2>
+            <ol>
+                <li>Выбирай авто с хорошим нитро.</li>
+                <li>Запоминай трассы: где баллоны и трамплины.</li>
+                <li>Нитро-волна в воздухе — мощный рывок.</li>
+                <li>Развороты сбивают соперников.</li>
+                <li>Не жги нитро на сложных поворотах.</li>
+            </ol>
+
+            <!-- Моя карьера детали -->
+            <h2>Режим «Моя карьера»</h2>
+            <p>Главы, сезоны. До 3 флагов за гонку за выполнение целей.</p>
+            <div class="note">
+                <strong>Совет:</strong> если не хватает флагов — перепройди старые гонки и добей все задачи. Чертежи выпадают не всегда — смотри награды на карте.
+            </div>
+            <p>Рекомендуемый ранг — сложность. Можно утроить кредиты за рекламу (2 раза в день).</p>
+            <p>Камера: Настройки → Звук и дисплей (4 положения). Зеркала нет.</p>
+
+            <hr>
+
+            <div class="highlight-box" style="text-align: center;">
+                <strong>🏁 ЭТОТ ГАЙД ПОСТОЯННО ПОПОЛНЯЕТСЯ</strong><br>
+                Заходи на ShizzyBoost за новыми секретами и тактиками!
+            </div>
+        </div>
+
+        <footer>
+            <div class="copyright">НА ТОВАРЕ АВТОРСКИЕ ПРАВА · ПЕРЕПРОДАЖА ЗАПРЕЩЕНА</div>
+            <div style="margin-top: 15px; color: #475569;">© ShizzyBoost • Все советы для Asphalt 9</div>
+        </footer>
+    </div>
+
+    <!-- Скрипт для анимированных частиц -->
+    <script>
+        (function() {
+            const canvas = document.getElementById('particle-canvas');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let particles = [];
+
+            function initParticles(count = 80) {
+                for (let i = 0; i < count; i++) {
+                    particles.push({
+                        x: Math.random() * width,
+                        y: Math.random() * height,
+                        radius: Math.random() * 3 + 1.5,
+                        speedX: (Math.random() - 0.5) * 0.4,
+                        speedY: (Math.random() - 0.5) * 0.4,
+                        color: `rgba(245, 179, 28, ${Math.random() * 0.25 + 0.1})`  // оранжевые с прозрачностью
+                    });
+                }
+            }
+
+            function resizeCanvas() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+                particles = [];
+                initParticles(90);
+            }
+
+            function drawParticles() {
+                ctx.clearRect(0, 0, width, height);
+                for (let p of particles) {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+                    // движение
+                    p.x += p.speedX;
+                    p.y += p.speedY;
+
+                    // границы: возвращаем с другой стороны
+                    if (p.x < 0) p.x = width;
+                    if (p.x > width) p.x = 0;
+                    if (p.y < 0) p.y = height;
+                    if (p.y > height) p.y = 0;
+                }
+                requestAnimationFrame(drawParticles);
+            }
+
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+            });
+
+            resizeCanvas();
+            drawParticles();
+        })();
+    </script>
+</body>
+</html>
